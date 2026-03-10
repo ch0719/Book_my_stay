@@ -1,5 +1,5 @@
 import java.util.*;
-public class book_my_stay {
+public class UC5_book_my_stay {
     // -------------------------
     // UC2: Room Model
     // -------------------------
@@ -118,55 +118,7 @@ public class book_my_stay {
             }
         }
     }
-    // -------------------------
-    // UC6: Booking Service
-    // -------------------------
-    static class BookingService {
-        // Room type → allocated room IDs
-        private HashMap<String, Set<String>> allocatedRooms;
-        // Ensures global uniqueness
-        private Set<String> usedRoomIds;
-        public BookingService() {
-            allocatedRooms = new HashMap<>();
-            usedRoomIds = new HashSet<>();
-        }
-        public void processBookings(BookingRequestQueue requestQueue, RoomInventory inventory) {
-            Queue<Reservation> queue = requestQueue.getQueue();
-            System.out.println("\nProcessing Booking Requests...\n");
-            while (!queue.isEmpty()) {
-                Reservation reservation = queue.poll();
-                String roomType = reservation.getRoomType();
-                int available = inventory.getAvailability(roomType);
-                if (available > 0) {
-                    String roomId = generateRoomId(roomType);
-                    // record allocation
-                    allocatedRooms
-                            .computeIfAbsent(roomType, k -> new HashSet<>())
-                            .add(roomId);
-                    usedRoomIds.add(roomId);
-                    // update inventory immediately
-                    inventory.decreaseAvailability(roomType);
-                    System.out.println("Reservation Confirmed:");
-                    System.out.println(reservation.getGuestName() +
-                            " → " + roomType +
-                            " | Room ID: " + roomId + "\n");
-                } else {
-                    System.out.println("Reservation Failed for "
-                            + reservation.getGuestName()
-                            + " (No rooms available for "
-                            + roomType + ")\n");
-                }
-            }
-        }
-        private String generateRoomId(String roomType) {
-            String prefix = roomType.replace(" ", "").substring(0,3).toUpperCase();
-            String roomId;
-            do {
-                roomId = prefix + "-" + (usedRoomIds.size() + 1);
-            } while (usedRoomIds.contains(roomId));
-            return roomId;
-        }
-    }
+
     public static void main(String[] args) {
         // UC1
         System.out.println("Welcome to the Hotel Booking System");
@@ -194,10 +146,7 @@ public class book_my_stay {
 
         requestQueue.displayQueue();
 
-        // UC6 Booking Allocation
-        BookingService bookingService = new BookingService();
 
-        bookingService.processBookings(requestQueue, inventory);
 
         // show inventory after allocation
         inventory.displayInventory();

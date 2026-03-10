@@ -1,5 +1,5 @@
 import java.util.*;
-public class book_my_stay {
+public class UC6_book_my_stay {
     // -------------------------
     // UC2: Room Model
     // -------------------------
