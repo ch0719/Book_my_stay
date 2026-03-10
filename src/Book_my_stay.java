@@ -1,5 +1,5 @@
 import java.util.*;
-public class UC1_book_my_stay {
+public class Book_my_stay {
 
     public static void main(String[] args) {
         // UC1
